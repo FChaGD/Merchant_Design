@@ -24,7 +24,7 @@
 
 ## 3. 데이터 테이블 엑셀화 v2 — 제작+Unity 검증+커밋 완료
 
-기획: [Docs/기획/14-2026-09-02-데이터_테이블_엑셀화_기획.md](../기획/14-2026-09-02-데이터_테이블_엑셀화_기획.md) §6
+기획: [Docs/기획/시스템/14-2026-09-02-데이터_테이블_엑셀화_기획.md](../기획/시스템/14-2026-09-02-데이터_테이블_엑셀화_기획.md) §6
 설계: [Docs/설계/18-2026-09-03-데이터_테이블_v2_스키마_아키텍처.md](../설계/18-2026-09-03-데이터_테이블_v2_스키마_아키텍처.md)
 
 **핵심 스키마 결정**(기획 14번 §6): (1) Data 시트(수치/Id)와 String 시트(Id→한국어 텍스트) 분리, (2) 도메인별 워크북+폴더 분리(`Character/`·`Enemy/`·`Tactics/`), (3) enum 9종에 명시적 Id를 고정하고 데이터 시트 PK로 사용(게임 로직 분기는 enum 그대로, UI 출력 텍스트만 String 시트 조회로 분리).
@@ -47,7 +47,7 @@
 
 ### 3.1 v1 산출물 (v2로 대체됨, 참고용)
 
-기획 [14번](../기획/14-2026-09-02-데이터_테이블_엑셀화_기획.md) §1~§5, 설계 [17번](../설계/17-2026-09-02-데이터_테이블_임포트_아키텍처.md). `EditorTableReader`/`GetOrCreateAsset<T>`/get-or-create 임포터 패턴/Provider 어댑터 구조(`TableBattleUnitStatProvider`/`TableEnemyTypeCompositionProvider`, 인터페이스 무변경) 자체는 v2도 그대로 계승 — 재론 불필요. Placeholder 2종(`PlaceholderBattleUnitStatProvider`/`PlaceholderEnemyTypeCompositionProvider`) 삭제, `ExcelDataReader` 플러그인 배치(`Assets/Plugins/Editor/ExcelDataReader/`)는 v1에서 이미 완료된 채 유지됨.
+기획 [14번](../기획/시스템/14-2026-09-02-데이터_테이블_엑셀화_기획.md) §1~§5, 설계 [17번](../설계/17-2026-09-02-데이터_테이블_임포트_아키텍처.md). `EditorTableReader`/`GetOrCreateAsset<T>`/get-or-create 임포터 패턴/Provider 어댑터 구조(`TableBattleUnitStatProvider`/`TableEnemyTypeCompositionProvider`, 인터페이스 무변경) 자체는 v2도 그대로 계승 — 재론 불필요. Placeholder 2종(`PlaceholderBattleUnitStatProvider`/`PlaceholderEnemyTypeCompositionProvider`) 삭제, `ExcelDataReader` 플러그인 배치(`Assets/Plugins/Editor/ExcelDataReader/`)는 v1에서 이미 완료된 채 유지됨.
 
 ## 4. 남은 미정 사항 (카테고리별)
 
@@ -66,7 +66,7 @@
 
 ## 6. 도시 지도 데이터 저장 — v1(SO 직접저장) 완료 → v2(엑셀 테이블화+Id 전면 정수화) 제작+검증+커밋 완료
 
-**v2(엑셀 테이블화)**: 기획 [15번 §7~§8](../기획/15-2026-09-03-도시_지도_데이터_저장_기획.md), 설계 [20번](../설계/20-2026-09-03-도시_지도_데이터_엑셀테이블화_아키텍처.md). v1 방식("저장" 버튼이 SO 에셋에 직접 씀)을 "드래그+엑셀 둘 다 유효, 엑셀이 단일 진실 소스"로 전환. Id 전면 정수화 이후 **Unity 컴파일 성공 확인됨**(2026-09-03). **기능 검증 전부 통과**(사용자 확인, 2026-09-03): 지도 표시/경로 추가/String 테이블/재시작 복원/신규 도시 String 자리표시자 자동 추가. 저장 도중 발생한 `IOException`(엑셀이 파일을 열어둔 상태)은 코드 버그가 아니라 파일 잠금 문제로 진단, `TripCityMapPersistence.Save`에 안내 메시지를 남기는 방어 처리 추가 후 재검증까지 완료. **커밋 완료**(`4e8b03e`), `content`/`develop` 양쪽 push 완료.
+**v2(엑셀 테이블화)**: 기획 [15번 §7~§8](../기획/시스템/15-2026-09-03-도시_지도_데이터_저장_기획.md), 설계 [20번](../설계/20-2026-09-03-도시_지도_데이터_엑셀테이블화_아키텍처.md). v1 방식("저장" 버튼이 SO 에셋에 직접 씀)을 "드래그+엑셀 둘 다 유효, 엑셀이 단일 진실 소스"로 전환. Id 전면 정수화 이후 **Unity 컴파일 성공 확인됨**(2026-09-03). **기능 검증 전부 통과**(사용자 확인, 2026-09-03): 지도 표시/경로 추가/String 테이블/재시작 복원/신규 도시 String 자리표시자 자동 추가. 저장 도중 발생한 `IOException`(엑셀이 파일을 열어둔 상태)은 코드 버그가 아니라 파일 잠금 문제로 진단, `TripCityMapPersistence.Save`에 안내 메시지를 남기는 방어 처리 추가 후 재검증까지 완료. **커밋 완료**(`4e8b03e`), `content`/`develop` 양쪽 push 완료.
 
 **Id 전면 정수화(2026-09-03, 사용자가 "유지보수 악영향" 우려로 범위 확대 지시)**: 최초엔 Id 정수화를 "엑셀/`TripCityMapAsset` 경계로만" 좁혀 잡았으나(기획 §8.2 최초 결정), 사용자가 그 경계 변환 자체가 유지보수 부담이라 판단해 **`TripOriginDestinationAssigner`/`ITripOriginDestinationReader`/`ITripOriginDestinationAssigner`/`ITripRouteReader`/`ITripLocationInfo`/`PlaceholderTripLocationInfo`(전부 "정식", `Core/UI/Trip/`, 지금까지 이 작업에서 손대지 않기로 선 그어뒀던 영역)까지 포함한 전면 정수화**로 재확정(기획 §8.2 재정정, 설계 20번 §9). `string`→`int`(미배정 상태는 `int?`)로 아래 15개 파일을 수정:
 - 정식: `ITripOriginDestinationReader.cs`, `ITripOriginDestinationAssigner.cs`, `TripOriginDestinationAssigner.cs`(전체 재작성), `ITripRouteReader.cs`, `ITripLocationInfo.cs`, `PlaceholderTripLocationInfo.cs`, `TripCityMapAsset.cs`
@@ -85,7 +85,7 @@
 
 ### v1 — SO 에셋 직접 저장 (아래 내용, 제작+버그수정 완료, Unity 미검증)
 
-기획: [Docs/기획/15-2026-09-03-도시_지도_데이터_저장_기획.md](../기획/15-2026-09-03-도시_지도_데이터_저장_기획.md)
+기획: [Docs/기획/시스템/15-2026-09-03-도시_지도_데이터_저장_기획.md](../기획/시스템/15-2026-09-03-도시_지도_데이터_저장_기획.md)
 설계: [Docs/설계/19-2026-09-03-도시_지도_데이터_저장_아키텍처.md](../설계/19-2026-09-03-도시_지도_데이터_저장_아키텍처.md)
 
 **신규 파일**: `Core/Debug/Trip/ITripCityReader.cs`, `Core/Debug/Trip/TripCityMapPersistence.cs`, `Core/UI/Trip/TripCityMapAsset.cs`.
