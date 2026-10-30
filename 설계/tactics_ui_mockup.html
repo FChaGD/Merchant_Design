@@ -1,0 +1,509 @@
+<title>방향성 지시 배치도</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #efe8d8;
+    --surface: #fbf8ef;
+    --surface-2: #f3ecdb;
+    --ink: #2b2a26;
+    --ink-soft: #55524a;
+    --rule: #c9bfa0;
+    --rule-soft: #ddd4b9;
+    --existing: #7c8590;
+    --existing-bg: #e7e9ea;
+    --new: #a3701f;
+    --new-bg: #f3e2c4;
+    --control-border: #b8956a;
+    --control-bg: #ffffff;
+    --overlay: rgba(43, 42, 38, 0.5);
+    --shadow: rgba(43, 42, 38, 0.18);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1d1c19;
+      --surface: #29271f;
+      --surface-2: #322f24;
+      --ink: #ede6d3;
+      --ink-soft: #b8ae96;
+      --rule: #4a4535;
+      --rule-soft: #3a3628;
+      --existing: #9aa3ac;
+      --existing-bg: #34363a;
+      --new: #d9a24c;
+      --new-bg: #4a3a1c;
+      --control-border: #8a6f43;
+      --control-bg: #3a3626;
+      --overlay: rgba(10, 9, 6, 0.6);
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #1d1c19;
+    --surface: #29271f;
+    --surface-2: #322f24;
+    --ink: #ede6d3;
+    --ink-soft: #b8ae96;
+    --rule: #4a4535;
+    --rule-soft: #3a3628;
+    --existing: #9aa3ac;
+    --existing-bg: #34363a;
+    --new: #d9a24c;
+    --new-bg: #4a3a1c;
+    --control-border: #8a6f43;
+    --control-bg: #3a3626;
+    --overlay: rgba(10, 9, 6, 0.6);
+    --shadow: rgba(0, 0, 0, 0.4);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans KR", "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 2.5rem 1.5rem 4rem;
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  header.intro {
+    margin-bottom: 2.4rem;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--new);
+    margin: 0 0 0.6rem;
+  }
+
+  h1 {
+    font-family: "Spectral", serif;
+    font-weight: 600;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    margin: 0 0 0.7rem;
+    text-wrap: balance;
+  }
+
+  header.intro p {
+    max-width: 62ch;
+    color: var(--ink-soft);
+    margin: 0;
+    font-size: 0.98rem;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.4rem;
+    margin-top: 1.3rem;
+    font-size: 0.84rem;
+    color: var(--ink-soft);
+  }
+
+  .legend-item { display: flex; align-items: center; gap: 0.5rem; }
+
+  .swatch {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 3px;
+    flex: none;
+  }
+
+  .swatch.existing { background: var(--existing-bg); border: 1.5px dashed var(--existing); }
+  .swatch.new { background: var(--new-bg); border: 1.5px solid var(--new); }
+  .swatch.control { background: var(--control-bg); border: 1.5px solid var(--control-border); }
+
+  section.frames {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.2rem;
+    margin-bottom: 2.6rem;
+  }
+
+  figure.frame {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  figure.frame.panel-frame { grid-column: 1 / -1; }
+
+  figcaption {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.76rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  figcaption .scene-name {
+    font-family: "Spectral", serif;
+    font-size: 1rem;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .screen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px -10px var(--shadow);
+    background-image:
+      linear-gradient(var(--rule-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+    background-size: 10% 10%;
+  }
+
+  .box {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.72rem;
+    padding: 0.2rem 0.4rem;
+    line-height: 1.25;
+  }
+
+  .box.existing {
+    background: var(--existing-bg);
+    border: 1.5px dashed var(--existing);
+    color: var(--ink-soft);
+    border-radius: 3px;
+  }
+
+  .box.new {
+    background: var(--new-bg);
+    border: 1.5px solid var(--new);
+    color: var(--ink);
+    font-weight: 600;
+    border-radius: 3px;
+  }
+
+  .coord {
+    position: absolute;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  /* --- Tactics panel frame --- */
+  .panel-screen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--overlay);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px -10px var(--shadow);
+  }
+
+  .card {
+    position: absolute;
+    left: 20%; top: 10%; width: 60%; height: 80%;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    box-shadow: 0 8px 24px -8px var(--shadow);
+  }
+
+  .card .field {
+    position: absolute;
+  }
+
+  .field.label {
+    display: flex;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  .field.label.title {
+    font-family: "Spectral", serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+
+  .field.control {
+    background: var(--control-bg);
+    border: 1.5px solid var(--control-border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.55rem;
+    font-size: 0.74rem;
+    color: var(--ink);
+    gap: 0.4rem;
+  }
+
+  .field.control.toggle {
+    justify-content: center;
+    text-align: center;
+    font-size: 0.68rem;
+  }
+
+  .field.control .chev {
+    color: var(--new);
+    font-size: 0.7rem;
+  }
+
+  .field.button {
+    background: var(--new-bg);
+    border: 1.5px solid var(--new);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .field.section-tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--new);
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .field.tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid var(--rule-soft);
+    border-radius: 0;
+    font-family: "Spectral", serif;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    padding: 0;
+  }
+
+  .field.tab:hover { color: var(--ink); }
+
+  .field.tab.active {
+    color: var(--new);
+    border-bottom-color: var(--new);
+  }
+
+  .field.tab:focus-visible {
+    outline: 2px solid var(--new);
+    outline-offset: 2px;
+  }
+
+  .content-root {
+    position: absolute;
+    display: none;
+  }
+
+  .content-root.active { display: block; }
+
+  .placeholder-note {
+    position: absolute;
+    left: 0; top: 0; width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.86rem;
+    border: 1.5px dashed var(--rule);
+    border-radius: 4px;
+    padding: 1rem;
+  }
+
+  table.coord-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  table.coord-table caption {
+    text-align: left;
+    font-family: "Spectral", serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 0.6rem;
+  }
+
+  table.coord-table th, table.coord-table td {
+    text-align: left;
+    padding: 0.45rem 0.7rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  table.coord-table th {
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  table.coord-table td.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-soft);
+  }
+
+  .tables-wrap {
+    overflow-x: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.4rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.6rem 1.8rem;
+  }
+
+  @media (max-width: 860px) {
+    section.frames, .tables-wrap { grid-template-columns: 1fr; }
+  }
+
+  .state-existing { color: var(--existing); }
+  .state-new { color: var(--new); }
+</style>
+
+<div class="page">
+  <header class="intro">
+    <p class="eyebrow">Docs / 설계 / 11 — 검수용 목업</p>
+    <h1>방향성 지시 배치도</h1>
+    <p>Hub·Field 씬에 새로 추가되는 진입 버튼과, 방향성 지시 패널 내부 요소를 실제 앵커 비율대로 배치한 목업이다. 점선 회색 상자는 기존 요소(참고용), 실선 갈색 상자는 이번에 추가되는 신규 요소다.</p>
+    <div class="legend">
+      <div class="legend-item"><span class="swatch existing"></span>기존 요소 (참고)</div>
+      <div class="legend-item"><span class="swatch new"></span>신규 요소</div>
+      <div class="legend-item"><span class="swatch control"></span>패널 내부 컨트롤(드롭다운/토글)</div>
+    </div>
+  </header>
+
+  <section class="frames">
+    <figure class="frame">
+      <figcaption><span class="scene-name">Hub 씬</span>전체 화면 = (0,0)–(1,1)</figcaption>
+      <div class="screen">
+        <div class="box existing" style="left:10.52%; top:47.07%; width:13.54%; height:11.54%;">배치<br>(기존)</div>
+        <div class="box existing" style="left:71.2%; top:69.51%; width:19.64%; height:20.11%;">상행 준비<br>(기존)</div>
+        <div class="box new" style="left:10.52%; top:33.52%; width:13.54%; height:11.55%;">방향성 지시<br>(신규)</div>
+      </div>
+    </figure>
+
+    <figure class="frame">
+      <figcaption><span class="scene-name">Field 씬</span>전체 화면 = (0,0)–(1,1)</figcaption>
+      <div class="screen">
+        <div class="box existing" style="left:2%; top:90%; width:12%; height:8%;">정비창<br>(기존)</div>
+        <div class="box new" style="left:2%; top:80%; width:12%; height:8%;">방향성 지시<br>(신규)</div>
+      </div>
+    </figure>
+
+    <figure class="frame panel-frame">
+      <figcaption><span class="scene-name">방향성 지시 패널</span>어두운 오버레이 위 카드 = ContentCard (0.20,0.10)–(0.80,0.90). 탭을 눌러 콘텐츠 전환을 확인할 수 있다.</figcaption>
+      <div class="panel-screen">
+        <div class="card">
+          <div class="field label title" style="left:5%; top:2%; width:40%; height:8%;">방향성 지시</div>
+          <div class="field button" style="left:86%; top:2%; width:11%; height:8%;">닫기</div>
+
+          <button type="button" class="field tab active" data-tab="party" style="left:5%; top:12%; width:28%; height:8%;">파티 전체</button>
+          <button type="button" class="field tab" data-tab="rolegroup" style="left:36%; top:12%; width:28%; height:8%;">역할군</button>
+          <button type="button" class="field tab" data-tab="individual" style="left:67%; top:12%; width:28%; height:8%;">개체별</button>
+
+          <!-- ContentRoot 영역: 카드 기준 (0.05,0.06)-(0.95,0.76) -->
+          <div class="content-root active" data-panel="party" style="left:5%; top:24%; width:90%; height:70%;">
+            <div class="field control" style="left:0%; top:83%; width:28%; height:17%;">적 인식 유형</div>
+            <div class="field control" style="left:30%; top:83%; width:38%; height:17%;">1초 지연<span class="chev">▾</span></div>
+            <div class="field control" style="left:0%; top:42%; width:28%; height:17%;">활동 반경</div>
+            <div class="field control" style="left:30%; top:42%; width:38%; height:17%;">표준<span class="chev">▾</span></div>
+            <div class="field control" style="left:0%; top:0%; width:28%; height:17%;">추적</div>
+            <div class="field control" style="left:30%; top:0%; width:38%; height:17%;">공세 판단<span class="chev">▾</span></div>
+          </div>
+
+          <div class="content-root" data-panel="rolegroup" style="left:5%; top:24%; width:90%; height:70%;">
+            <div class="field control toggle" style="left:0%; top:83%; width:45%; height:17%;">전열 — 상단 지침 ⇄ 직접 지정</div>
+            <div class="field control" style="left:0%; top:60%; width:30%; height:17%;">타겟 우선순위<span class="chev">▾</span></div>
+            <div class="field control" style="left:33%; top:60%; width:30%; height:17%;">국소 포지셔닝<span class="chev">▾</span></div>
+            <div class="field control" style="left:66%; top:60%; width:30%; height:17%;">자기 보호<span class="chev">▾</span></div>
+
+            <div class="field control toggle" style="left:0%; top:40%; width:45%; height:17%;">원거리딜러 — 상단 지침 ⇄ 직접 지정</div>
+            <div class="field control" style="left:0%; top:17%; width:30%; height:17%;">타겟 우선순위<span class="chev">▾</span></div>
+            <div class="field control" style="left:33%; top:17%; width:30%; height:17%;">국소 포지셔닝<span class="chev">▾</span></div>
+            <div class="field control" style="left:66%; top:17%; width:30%; height:17%;">자기 보호<span class="chev">▾</span></div>
+          </div>
+
+          <div class="content-root" data-panel="individual" style="left:5%; top:24%; width:90%; height:70%;">
+            <div class="placeholder-note">개체별 방향성은 이번 버전에서 지원하지 않습니다<br>(향후 확장 예정 — Docs/기획/12번 §4)</div>
+          </div>
+        </div>
+      </div>
+    </figure>
+  </section>
+
+  <div class="tables-wrap">
+    <table class="coord-table">
+      <caption>진입 버튼 — 실제 앵커</caption>
+      <thead><tr><th>요소</th><th>AnchorMin</th><th>AnchorMax</th></tr></thead>
+      <tbody>
+        <tr><td class="state-existing">Hub.FormationButton</td><td class="num">0.1052, 0.4139</td><td class="num">0.2406, 0.5293</td></tr>
+        <tr><td class="state-new">Hub.TacticsButton</td><td class="num">0.1052, 0.5493</td><td class="num">0.2406, 0.6648</td></tr>
+        <tr><td class="state-existing">Field.FormationButton</td><td class="num">0.02, 0.02</td><td class="num">0.14, 0.10</td></tr>
+        <tr><td class="state-new">Field.TacticsButton</td><td class="num">0.02, 0.12</td><td class="num">0.14, 0.20</td></tr>
+      </tbody>
+    </table>
+
+    <table class="coord-table">
+      <caption>패널 내부 — 카드 기준 좌표(공통 프레임)</caption>
+      <thead><tr><th>요소</th><th>AnchorMin</th><th>AnchorMax</th></tr></thead>
+      <tbody>
+        <tr><td>ContentCard(화면 기준)</td><td class="num">0.20, 0.10</td><td class="num">0.80, 0.90</td></tr>
+        <tr><td>TitleLabel</td><td class="num">0.05, 0.90</td><td class="num">0.45, 0.98</td></tr>
+        <tr><td>CloseButton</td><td class="num">0.86, 0.90</td><td class="num">0.97, 0.98</td></tr>
+        <tr><td>Tab.Party / RoleGroup / Individual</td><td class="num">0.05 / 0.36 / 0.67, 0.80</td><td class="num">+0.28 폭, 0.88</td></tr>
+        <tr><td>ContentRoot(탭 3개 공유)</td><td class="num">0.05, 0.06</td><td class="num">0.95, 0.76</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.field.tab').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('data-tab');
+      var card = btn.closest('.card');
+      card.querySelectorAll('.field.tab').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      card.querySelectorAll('.content-root').forEach(function (panel) {
+        panel.classList.toggle('active', panel.getAttribute('data-panel') === target);
+      });
+    });
+  });
+</script>
