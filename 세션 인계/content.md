@@ -1,6 +1,6 @@
 # content 브랜치 세션 인계
 
-최종 갱신: 2026-11-27(공격 애니메이션 제작 완료)
+최종 갱신: 2026-11-27(세션 종료)
 
 목적: `content` 브랜치에서 진행 중인 작업을 세션 간에 이어가기 위한 살아있는 문서. 세부 근거는 각 기획/설계/제작 문서가 우선이며, 이 문서는 "지금 어디까지 왔고 다음에 뭘 할지"만 담는다. 새 세션마다 새 파일을 만들지 않고 이 문서를 직접 수정/삭제/갱신한다.
 
@@ -35,14 +35,24 @@
 - 결정 사항: 스타일 = 카툰풍 시안 E(B 형태+C 화풍), 양피지+가죽 테두리 프레임, 버튼 1종 통일, 평판 = Y자 마네킹+FX 후광(C1 몸 하얗게 → W1), 인벤토리 단축 버튼 = HUD 아래 120px·상단 물류품만 30% 축소·소모품과 중앙 정렬, 소지량 툴팁 겹침 허용.
 - 보류(기획 118 §7): E 유닛·전투 표현(아이콘 소재·아군/적 구분 방식), G 화물 아이템 그림·H 인물 그림(무역품·캐릭터가 자리표시자 데이터).
 
-### A.3 다음 작업
-0. **설계 124·125 사용자 인게임 판단 대기**(2026-11-27 제작 완료) → 검진 여부(124·125 함께). 0.5m 유지·측면 공격 폐기 확정. 상세는 §A.5.
-1. **기획 122 잔여 미정 §6**: 부족분(궁수·방패병·괴수·적대자) 생성 방식, 스타일 통일 기준, 동작 목록, 진영 HUD 세부, 전사 2종 배정, 마차·시설·투사체·잔해.
-2. **설계 121 인게임 확인**(§11 A1~A10·B1~B2·C1~C2, A4가 개정 목적) → 검진 여부. 미확인: Field 실전투 화면, 유닛 위 그리기, 이전 바닥과 밝기 비교.
-3. 보류: 기획 118 토글 체크 상태 - 덮어쓰기 토글이 비활성(설계 12 §6-1)이라 화면 확인 불가, 개체별 방향성 도입 시 확인.
-4. 참고(미수정): Field 방향성 지시 패널 위 디버그 정보 줄이 "파티 전체" 탭과 겹침(기존 문제, 디버그 UI 이동 대상).
-5. 메인 미커밋 잔여(이 작업과 무관, 2026-11-24 12:16 세션 밖에서 수정됨 - 출처 확인 필요): `EventEncounterCoordinator.cs`·`EventEncounterDirector.cs`·`RestEventSession.cs`·`EventEncounterDirectorTests.cs`. 테이블 `.asset` 7개는 줄바꿈(LF/CRLF)만 다름, 폰트 대체 에셋은 런타임 글리프 갱신.
-6. 저장 잔여: 메인 content 커밋 3개(ef8de85·dab3828·c814c70) 미푸시. 미커밋: 설계 123 제작분(`Scripts/Core/Battle/Visual/`·`Scripts/Editor/Art/`·`Shaders/SpriteFlash.shader`·`Assets/Art/Units/`·BattleTest 씬·`BattleCharacterUnitView`·`BattleHealthGaugeView`·`BattleCharacterUnit`·`IBattleCombatant`·BattleTest 진영/규칙·`EditorBattleWorldBuilder`·`BattleTestSceneInstaller`·테스트 5개 파일·공유 프리팹)·`ArtSource/UnitAnim/`(원본·타이밍·tools), `CLAUDE.md`(그래픽 결정 비교 이미지 절)·`ArtSource/`(build_final.py 띠·노이즈 출력 포함)·`예시/`·프롬프트 txt·설계 120+121 제작분(Floor 코드·셰이더·머티리얼·BattleFloorSet·Resources BattleFloor(띠4·노이즈·Grass_1, DirtEdge·낱장 삭제)·씬 3개·테스트·임포트 후처리). 문서 저장소: 기획 118·119·122·설계 120·121(+제작계획)·설계 123(+제작계획)·제작 가이드 05·색인·세션 인계 미커밋.
+### A.3 다음 작업 (2026-11-27 세션 종료 기준)
+0. **다음 세션 첫 작업: 궁수 애니메이션 미리보기 판단**(기획 122 §9.3). 미리보기 창(Tools/Game/Art/Unit Anim Preview, 날짜 2026-11-27)의 Q1~Q4(`archer_{idle,walk,run,attack}_hydra`) + 타이밍 시안 `ArtSource/UnitAnim/2026-11-27/cartoon_timing_궁수시안1.txt`. 판단 포인트: 공격 14번(그림 속 화살 비행) 생략 여부, 끝 자세 활 위치가 시작과 달라 대기 복귀 시 튐 가능, 대기·걷기·달리기 박자. 채택 후 → **게임 반영 설계**(투사체 비행 판정: 발사 프레임 15 + 거리÷15m/s 유도 화살, 비행 중 대상 사망 시 피해 없음·쿨타임 소모, 궁수 사망해도 화살 피해 / 대상이 오른쪽이면 공격 클립만 좌우 반전 / 공격 중 도주는 발사 = 타격) → 제작.
+1. 설계 124·125(검사·약탈자 공격·공격 중 이동 정지·도주 모션 캔슬·달리기): 제작·검진·권장 수정·커밋·push 완료. 사용자 인게임 판단 결과 0.5m 찌르기 유지, 측면 공격 폐기, 뒷모습 생략(§8.8).
+2. 기획 122 잔여 §6: 방패병·괴수·적대자 그림, 진영 HUD 세부, 전사 2종 배정, 마차·시설·투사체·잔해. 그림 제작 플로우(2026-11-27 확립): **GPT 초안(사용자) → 로컬 비율 보정(OpenCV, `ArtSource/Archer/tools/archer_warp.py`) → 필요 시 AI 다듬기**. Ludo `generateWithStyle`은 그림체가 맞지 않아 캐릭터 입력 그림용으로 부적합, Gemini 편집은 형태 개선 없이 선명도만 떨어짐. 비율 측정은 가져오기 기준(무기 제외 머리 위~발): 검사 74:26·창병 75:25·도적 63~68·궁수 채택본 72:28.
+3. 설계 121(전투 바닥 스플랫) 인게임 확인(§11) → 검진 여부. 미확인: Field 실전투 화면, 이전 바닥과 밝기 비교.
+4. 보류: 기획 118 토글 체크 상태(덮어쓰기 토글 비활성). 참고(미수정): Field 방향성 지시 패널 위 디버그 줄이 "파티 전체" 탭과 겹침.
+5. 크레딧: Ludo 잔여 **25.01**(2026-12-01 21:40경 Indie 250 충전).
+6. 저장 상태: 메인 content·system·develop, 문서 저장소, Merchant_Asset 모두 커밋·push 완료. 미커밋은 `Docs/시나리오 작업물.xlsx`(사용자 작업 중 - 건드리지 말 것)뿐.
+
+### A.3-1 저장소 구조 (2026-11-27 정리)
+| 저장소 | 공개 | 로컬 위치 | 내용 |
+|---|---|---|---|
+| Merchant_VibeCode | 공개(포트폴리오) | `Merchant/` | Unity 코드·게임에 쓰는 그림. `ArtSource/`·`Docs/` 제외 |
+| Merchant_Design | 공개 | `Merchant/Docs/` | 기획·설계·제작 문서·세션 인계 |
+| **Merchant_Asset** | **비공개** | `Merchant/ArtSource/` | 아트 원본 에셋1(텍스트·도구·입력 그림·최종본·`예시/`). 에셋2(생성 프레임·영상 등)는 `ArtSource/.gitignore` 제외 후 Release `asset2-2026-11-27`에 분할 압축(기본 4파트 + add1, 영문 파일명 - Release가 한글을 지움, 복원은 RESTORE.txt) |
+- 원본 경로는 변수화(기본 `ArtSource/UnitAnim`, PC별 `Tools/Game/Art/Set Unit Anim Source Folder...`).
+- gh CLI 설치·로그인 완료(`C:\Program Files\GitHub CLI\gh.exe`, 기존 Bash 세션 PATH에는 없음 - 전체 경로로 실행).
+- 커밋 시 한 파일에 두 작업이 섞이면 hunk 단위로 나눠 올린다(바이트 단위 patch, `git apply --cached --recount`).
 
 ### A.4 작업 환경 메모
 - Unity CLI 캡처: Play 후 `runInBackground`를 Hub 로드 폴링 안에서 같이 켜야 프레임이 멈추지 않는다(앞에서 한 번만 켜면 로드 중 5초 타임아웃으로 실패하는 경우 있음). Field 진입은 `ITripDeparture.TryDepart`+`GameManager.RequestSceneTransition(Field)` eval, 전투는 `EncounterManager.DebugTriggerEncounter()`. 배치 유닛이 없어 전투는 즉시 패배 - 전투 화면은 `capture_game_view --source camera --camera Camera`로 확인.
