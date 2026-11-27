@@ -57,7 +57,7 @@
 - 진영 구분은 그림 틴트 금지 → HUD(세부 미정). 그림 크기 1m, 판정 크기 불변.
 
 **생성 절차(검증됨)**
-1. 입력: `예시/` 원본 → 알파 보정(245↑=255, 12↓=0)·외곽 자르기·여백 8%·640px → `ArtSource/UnitAnim/<날짜>/<캐릭터>-정면-input.png`.
+1. 입력: `ArtSource/예시/` 원본 → 알파 보정(245↑=255, 12↓=0)·외곽 자르기·여백 8%·640px → `ArtSource/UnitAnim/<날짜>/<캐릭터>-정면-input.png`.
 2. Ludo `animateSprite` **Hydra 3초 25장**(9크레딧), loop. 큰 입력 이미지는 MCP 인자로 못 넘김 → `ArtSource/UnitAnim/tools/ludo_call.py animateSprite <args.json>`(args 안 `"@file:<경로>"`를 data URI로 치환, 키는 `~/.claude.json`에서 읽고 출력 안 함) → `tools/fetch_jobs.py <날짜폴더> <클립이름>=<job_id>`로 수신 → `frames/*.webp`를 `frames_png/*.png`로 변환.
 3. **얼굴 지시 필수**: 지시문 끝에 `; the face stays a blank dark shadow with no eyes and no facial features`(빠뜨리면 도적 대기에 눈이 생겼다).
 4. 확인: 프레임 격자·얼굴 확대·머리 위치(top) 곡선으로 정점/디딤 프레임 찾기 → 타이밍을 `cartoon_timing_채택.txt`에 추가, 표시 이름 `labels.txt`(값 `-`면 숨김) → 에디터 창 `Tools/Game/Art/Unit Anim Preview`(타이밍 파일마다 한 줄, GIF 판단 금지).
@@ -89,6 +89,7 @@
 - 인게임 판단(2026-11-27): 0.5m 유지, 측면 공격 폐기(아래/위 두 벌). 추가 기획 122 §8.7 → 설계 125 제작 완료(메인 미커밋, 1090/1090): 공격 중 AI 이동 정지, 공격 중 도주 모션 캔슬 0.25초(타격 났으면 끝까지 재생 후 도주), 이동 = 달리기(import.txt Walk 줄 원본 교체).
 - 2026-11-27 배틀 테스트 버그 수정(메인 미커밋): 전투 시작 후 리셋하면 스폰 포인트 예약분 적이 미리보기로 남던 기존 버그 - 리셋 시 예약 변환 항목 제거(`BattleTestSimulationRule.ResetToSetup`), CLI 재현·수정 확인.
 - 2026-11-27 124·125 검진 → 권장 #1(판정 타이밍 값 분리 `UnitAttackTiming`)·#2(`hit=` 오류 경고)·#3(화면 테스트 5개)·#7(클립 캐시) 수정, #6(보류 중 헛손질도 끝까지 재생) 유지. 1098/1098, Play 재확인. 메인 미커밋.
+- 2026-11-27 저장소 정리: Event 수정은 system(d79706e)→develop→content(7722d8b) 통합·push. 아트 원본 `ArtSource/`(+`예시/` 이동)는 비공개 저장소 **Merchant_Asset**(main, c00379c)으로 분리 - 메인 저장소는 `ArtSource/` 무시, 에셋2(생성 프레임 등 294MB)는 Release `asset2-2026-11-27`(분할 4개·sha256·RESTORE.txt, 영문 파일명). 원본 경로 변수화(Tools/Game/Art/Set Unit Anim Source Folder). 메인 content 미푸시 커밋: 5283104·0cb6ff6·836effd.
 - 이후 과제: 뒷모습(위 방향 공격 포함)·방향 전환, 진영 HUD, Field 적용, 궁수·방패병·괴수·적대자.
 
 ---
